@@ -1,14 +1,13 @@
-A **simple, fast and easy to setup** local SQL learning environment that you can **use with any of your favorit editor**. It uses Docker and Postgres and ships with three sample databases and **roll back** to **factory-default** at each restart to experiment freely without fear of breaking anything.
+A **simple, fast, and easy‑to‑set‑up** local SQL learning environment that you can **use with any editor**. It uses Docker + Postgres and ships with three sample databases. It **rolls back to factory‑default** on each restart so you can experiment freely without fear of breaking anything.
 
-## Preview
-CLI only :
-<img width="2183" height="1270" alt="image" src="https://github.com/user-attachments/assets/3dc4c4da-2411-44a1-a655-b00893bcf28a" />
+## 🖼️ Preview
+CLI only:
+<img width="900" alt="image" src="https://github.com/user-attachments/assets/3dc4c4da-2411-44a1-a655-b00893bcf28a" />
 
-Or using an IDE :
-<img width="2102" height="1252" alt="image" src="https://github.com/user-attachments/assets/d981c952-1b10-4d23-b734-82cb3bbae2dd" />
+Or using an IDE:
+<img width="900" alt="image" src="https://github.com/user-attachments/assets/d981c952-1b10-4d23-b734-82cb3bbae2dd" />
 
-
-## Features
+## ✨ Features
 - Postgres 16 in Docker (rootless friendly)
 - Three sample databases: `northwind`, `chinook`, `school`
 - Factory reset on restart (fresh seed each time)
@@ -16,16 +15,24 @@ Or using an IDE :
 - Sandbox SQL file runner for quick queries
 - Two dataset sizes: `light` (~1k rows per table) and `heavy` (~26k rows total)
 
-## How to install
+## 📦 Install
 Clone the repo:
 ```bash
 git clone https://github.com/luniiya/test-SQL-playground
 cd test-SQL-playground
 ```
 
-Install docker :
+<details>
+<summary>Install Docker (optional)</summary>
 
-## How to use
+Most people already have Docker installed. If you don’t, use the official Docker installation guide for your OS and follow their recommended steps. Once installed, verify with:
+
+```bash
+docker --version
+```
+</details>
+
+## ▶️ How To Use
 ### start
 Start the environment and choose a database:
 ```bash
@@ -51,22 +58,22 @@ Type "help" for help.
 
 school=#
 ```
-Now you are into the SQL server, you can run any request you want, even tho it's not really pleasent to use.
+You’re now in the SQL server and can run any query you want (it’s not the most pleasant UI, but it works).
 
 ### The sandbox
-Without stopping start.sh, open with your favourite editor newRequest.sql :
+Without stopping `start.sh`, open `sandbox/newRequest.sql` with your favorite editor:
 ```bash
 $EDITOR sandbox/newRequest.sql
 ```
-then in this file you can write your request then run it with 
+Write your SQL queries in that file, then run them with:
 ```bash
 ./sandbox/sendRequest.sh
 ```
 For example :
-<img width="2126" height="955" alt="image" src="https://github.com/user-attachments/assets/70bd6286-1e11-42c1-b8ec-e01c5c638bab" />
+<img width="900" alt="image" src="https://github.com/user-attachments/assets/70bd6286-1e11-42c1-b8ec-e01c5c638bab" />
 
 ### How to stop the playground
-when your done, stop the container:
+When you’re done, stop the container:
 ```bash
 ./stop.sh
 ```
@@ -77,14 +84,14 @@ Factory reset + re-seed, then open the chooser:
 ./restart.sh
 ```
 
-## Database Structure Docs
+## 🗂️ Database Structure Docs
 See `docs/` for table + column and relationship summaries.
 
-## Notes
+## 📝 Notes
 - The database is ephemeral (tmpfs). Each fresh start is a clean seed.
 - If you want to persist data instead, I can switch back to a volume.
 
-## File Map
+## 🧭 File Map
 - `start.sh` — start + open DB chooser
 - `stop.sh` — stop container
 - `restart.sh` — wipe + re-seed + open chooser

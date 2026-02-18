@@ -1,13 +1,13 @@
 A **simple, fast, and easy‑to‑set‑up** local SQL learning environment that you can **use with any editor**. It uses Docker + Postgres and ships with three sample databases. It **rolls back to factory‑default** on each restart so you can experiment freely without fear of breaking anything.
 
-## 🖼️ Preview
+## 🪼 Preview
 CLI only:
 <img width="900" alt="image" src="https://github.com/user-attachments/assets/3dc4c4da-2411-44a1-a655-b00893bcf28a" />
 
 Or using an IDE:
 <img width="900" alt="image" src="https://github.com/user-attachments/assets/d981c952-1b10-4d23-b734-82cb3bbae2dd" />
 
-## ✨ Features
+## ☄️ Features
 - Postgres 16 in Docker (rootless friendly)
 - Three sample databases: `northwind`, `chinook`, `school`
 - Factory reset on restart (fresh seed each time)
@@ -32,7 +32,7 @@ docker --version
 ```
 </details>
 
-## ▶️ How To Use
+## 🧋 How To Use
 ### start
 Start the environment and choose a database:
 ```bash

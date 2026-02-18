@@ -2,8 +2,6 @@
 # Sandbox (keep the runner script)
 sandbox/*
 !sandbox/sendRequest.sh
-!sandbox/last_db
-!sandbox/last_dataset
 
 # LLM instructions
 instruction-for-llm.md

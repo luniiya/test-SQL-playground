@@ -23,7 +23,7 @@ cd test-SQL-playground
 ```
 
 <details>
-<summary>Install Docker (optional)</summary>
+<summary>Install Docker (if not already installed)</summary>
 
 Most people already have Docker installed. If you don’t, use the official Docker installation guide for your OS and follow their recommended steps. Once installed, verify with:
 

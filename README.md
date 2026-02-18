@@ -1,11 +1,12 @@
-# Test SQL Playground
+A **simple, fast and easy to setup** local SQL learning environment that you can **use with any of your favorit editor**. It uses Docker and Postgres and ships with three sample databases and **roll back** to **factory-default** at each restart to experiment freely without fear of breaking anything.
 
-A simple, terminal-first SQL learning environment using Docker and Postgres. It ships with three sample databases and a resettable factory-default dataset so students can experiment freely.
+## Preview
+CLI only :
+<img width="2183" height="1270" alt="image" src="https://github.com/user-attachments/assets/3dc4c4da-2411-44a1-a655-b00893bcf28a" />
 
-## Quick Start
-```bash
-./start.sh
-```
+Or using an IDE :
+<img width="2102" height="1252" alt="image" src="https://github.com/user-attachments/assets/d981c952-1b10-4d23-b734-82cb3bbae2dd" />
+
 
 ## Features
 - Postgres 16 in Docker (rootless friendly)
@@ -15,51 +16,65 @@ A simple, terminal-first SQL learning environment using Docker and Postgres. It 
 - Sandbox SQL file runner for quick queries
 - Two dataset sizes: `light` (~1k rows per table) and `heavy` (~26k rows total)
 
-## Install / Download
+## How to install
 Clone the repo:
 ```bash
 git clone https://github.com/luniiya/test-SQL-playground
-cd test-sql
+cd test-SQL-playground
 ```
 
-If you are using rootless Docker, set the socket path once per shell:
-```bash
-export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
-```
+Install docker :
 
-## Use From Console
+## How to use
+### start
 Start the environment and choose a database:
 ```bash
 ./start.sh
 ```
+It should output something like :
+```output
+┌─[ayaya@moonmelon]-< test-sql on  main >
+└─❯ ./start.sh
+[+] up 2/2
+ ✔ Network test-sql_default Created                                                                                      0.0s
+ ✔ Container test-sql-db    Created                                                                                      0.0s
+Waiting for Postgres to be healthy (seed data can take a few minutes on first start)...
+Choose a database:
+  1) northwind
+  2) chinook
+  3) school
+> 3
+Waiting for database 'school' to be created...
+Opening psql on database: school
+psql (16.12 (Debian 16.12-1.pgdg13+1))
+Type "help" for help.
 
-You can select a dataset size when starting:
-```bash
-./start.sh light
-./start.sh heavy
+school=#
 ```
+Now you are into the SQL server, you can run any request you want, even tho it's not really pleasent to use.
 
-Stop the container:
+### The sandbox
+Without stopping start.sh, open with your favourite editor newRequest.sql :
+```bash
+$EDITOR sandbox/newRequest.sql
+```
+then in this file you can write your request then run it with 
+```bash
+./sandbox/sendRequest.sh
+```
+For example :
+<img width="2126" height="955" alt="image" src="https://github.com/user-attachments/assets/70bd6286-1e11-42c1-b8ec-e01c5c638bab" />
+
+### How to stop the playground
+when your done, stop the container:
 ```bash
 ./stop.sh
 ```
 
+### How to wipe everything
 Factory reset + re-seed, then open the chooser:
 ```bash
 ./restart.sh
-```
-
-## Use The Sandbox Runner
-The sandbox lets you write SQL in a file and run it against a chosen database.
-
-1. Edit the file:
-```bash
-$EDITOR sandbox/newRequest.sql
-```
-
-2. Execute it:
-```bash
-./sandbox/sendRequest.sh
 ```
 
 ## Database Structure Docs

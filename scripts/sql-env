@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+COMPOSE_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/docker-compose.yml"
+CONTAINER_NAME="test-sql-db"
+DBS=(northwind chinook school)
+LAST_DB_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/sandbox/last_db"
+
+usage() {
+  cat <<'USAGE'
+Usage: scripts/sql-env [command]
+
+Commands:
+  start   Start the database container (default) and open psql
+  stop    Stop the container
+  status  Show container status
+  reset   Remove container and volume (data will be re-seeded next start)
+
+Examples:
+  scripts/sql-env
+  scripts/sql-env start
+  scripts/sql-env stop
+  scripts/sql-env reset
+USAGE
+}
+
+dcompose() {
+  docker compose -f "$COMPOSE_FILE" "$@"
+}
+
+require_docker() {
+  if ! docker info >/dev/null 2>&1; then
+    cat <<'MSG'
+Docker does not appear to be running or reachable.
+If you are using rootless Docker, export DOCKER_HOST first, e.g.:
+  export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
+MSG
+    exit 1
+  fi
+}
+
+choose_db() {
+  echo "Choose a database:" >&2
+  local i=1
+  for db in "${DBS[@]}"; do
+    echo "  $i) $db" >&2
+    i=$((i + 1))
+  done
+  echo -n "> " >&2
+  read -r choice
+  if [[ ! "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#DBS[@]} )); then
+    echo "Invalid selection." >&2
+    exit 1
+  fi
+  echo "${DBS[$((choice - 1))]}"
+}
+
+cmd="${1:-start}"
+
+case "$cmd" in
+  start)
+    require_docker
+    dcompose up -d
+    echo "Waiting for Postgres to be healthy (seed data can take a few minutes on first start)..."
+    ready=0
+    for _ in {1..300}; do
+      if docker exec "$CONTAINER_NAME" pg_isready -U postgres >/dev/null 2>&1; then
+        ready=1
+        break
+      fi
+      sleep 1
+    done
+    if [[ "$ready" -ne 1 ]]; then
+      echo "Postgres did not become ready in time."
+      echo "Recent container logs:"
+      docker logs --tail 50 "$CONTAINER_NAME" || true
+      exit 1
+    fi
+    db="$(choose_db)"
+    # Wait for selected database to exist (init scripts may still be running).
+    echo "Waiting for database '$db' to be created..."
+    db_ready=0
+    for _ in {1..300}; do
+      out="$(docker exec "$CONTAINER_NAME" psql -U postgres -d postgres -tAc "select 1 from pg_database where datname='${db}'" 2>/dev/null || true)"
+      if [[ "${out//[[:space:]]/}" == "1" ]]; then
+        db_ready=1
+        break
+      fi
+      sleep 1
+    done
+    if [[ "$db_ready" -ne 1 ]]; then
+      echo "Database '$db' did not appear in time."
+      echo "Recent container logs:"
+      docker logs --tail 50 "$CONTAINER_NAME" || true
+      exit 1
+    fi
+    printf '%s\n' "$db" > "$LAST_DB_FILE"
+    echo "Opening psql on database: $db"
+    docker exec -it "$CONTAINER_NAME" psql -U postgres -d "$db"
+    ;;
+  stop)
+    require_docker
+    dcompose stop
+    ;;
+  status)
+    require_docker
+    dcompose ps
+    ;;
+  reset)
+    require_docker
+    echo "This will remove the database volume and all data."
+    echo -n "Type 'yes' to continue: "
+    read -r confirm
+    if [[ "$confirm" == "yes" ]]; then
+      dcompose down -v
+      echo "Data removed. Next start will re-seed sample databases."
+    else
+      echo "Cancelled."
+    fi
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    echo "Unknown command: $cmd"
+    usage
+    exit 1
+    ;;
+esac

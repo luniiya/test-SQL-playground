@@ -1,0 +1,3 @@
+CREATE DATABASE northwind;
+CREATE DATABASE chinook;
+CREATE DATABASE school;

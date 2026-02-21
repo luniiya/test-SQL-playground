@@ -2,6 +2,11 @@
 # Sandbox (keep the runner script)
 sandbox/*
 !sandbox/sendRequest.sh
+sandbox/autoSendRequest.sh
+
+# Generated HR schema copies
+sql/init-light/hr_schema.psql
+sql/init-heavy/hr_schema.psql
 
 # LLM instructions
 instruction-for-llm.md

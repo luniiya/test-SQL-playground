@@ -64,6 +64,7 @@ fi
 printf '%s\n' "$dataset" > "$LAST_DATASET_FILE"
 rm -rf "$INIT_LINK"
 ln -s "$ROOT_DIR/sql/init-$dataset" "$INIT_LINK"
+cp -f "$ROOT_DIR/sql/hr_schema.psql" "$INIT_LINK/hr_schema.psql"
 
 # Ensure a clean seed every start.
 docker compose -f "$COMPOSE_FILE" down >/dev/null 2>&1 || true

@@ -3,7 +3,7 @@ set -euo pipefail
 
 COMPOSE_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/docker-compose.yml"
 CONTAINER_NAME="test-sql-db"
-DBS=(northwind chinook school)
+DBS=(northwind chinook school hr)
 LAST_DB_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/sandbox/last_db"
 
 usage() {

@@ -1,4 +1,4 @@
-A **simple, fast, and easy‑to‑set‑up** local SQL learning environment that you can **use with any editor**. It uses Docker + Postgres and ships with three sample databases. It **rolls back to factory‑default** on each restart so you can experiment freely without fear of breaking anything.
+A **simple, fast, and easy‑to‑set‑up** local SQL learning environment that you can **use with any editor**. It uses Docker + Postgres and ships with four sample databases. It **rolls back to factory‑default** on each restart so you can experiment freely without fear of breaking anything.
 
 ## 🪼 Preview
 CLI only:
@@ -9,7 +9,7 @@ Or using an IDE:
 
 ## ☄️ Features
 - Postgres 16 in Docker (rootless friendly)
-- Three sample databases: `northwind`, `chinook`, `school`
+- Four sample databases: `northwind`, `chinook`, `school`, `hr`
 - Factory reset on restart (fresh seed each time)
 - Interactive DB chooser with `psql`
 - Sandbox SQL file runner for quick queries
@@ -50,13 +50,14 @@ Choose a database:
   1) northwind
   2) chinook
   3) school
-> 3
-Waiting for database 'school' to be created...
-Opening psql on database: school
+  4) hr
+> 4
+Waiting for database 'hr' to be created...
+Opening psql on database: hr
 psql (16.12 (Debian 16.12-1.pgdg13+1))
 Type "help" for help.
 
-school=#
+hr=#
 ```
 You’re now in the SQL server and can run any query you want (it’s not the most pleasant UI, but it works).
 

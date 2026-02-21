@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 COMPOSE_FILE="$ROOT_DIR/docker-compose.yml"
 CONTAINER_NAME="test-sql-db"
 SQL_FILE="$ROOT_DIR/sandbox/newRequest.sql"
-DBS=(northwind chinook school)
+DBS=(northwind chinook school hr)
 LAST_DB_FILE="$ROOT_DIR/sandbox/last_db"
 
 try_docker() {
@@ -77,6 +77,8 @@ case " ${DBS[*]} " in
 esac
 
 printf '%s\n' "$db" > "$LAST_DB_FILE"
-echo "Running $SQL_FILE on database: $db"
+if [[ -z "${SEND_REQUEST_QUIET:-}" ]]; then
+  echo "Running $SQL_FILE on database: $db"
+fi
 
 docker exec -i "$CONTAINER_NAME" psql -U postgres -d "$db" < "$SQL_FILE"

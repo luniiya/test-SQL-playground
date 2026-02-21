@@ -2,7 +2,7 @@
 # Sandbox (keep the runner script)
 sandbox/*
 !sandbox/sendRequest.sh
-sandbox/autoSendRequest.sh
+!sandbox/autoSendRequest.sh
 
 # Generated HR schema copies
 sql/init-light/hr_schema.psql
